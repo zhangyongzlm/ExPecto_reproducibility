@@ -18,3 +18,5 @@ python predict_from_transform.py --modelList modellist_all_provided_renamed --in
 ```
 
 Folder `gene_exp_predict` stores the prediction results of gene expression with different models.
+
+`heatmap.ipynb` is to produce the heatmaps. We add annotations to all code blocks to make them easily understandable.
