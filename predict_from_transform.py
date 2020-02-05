@@ -35,6 +35,16 @@ parser.add_argument(
     dest="annoFile",
     default="/research/dept6/zhangy/project/Hirschsprung/ExPecto/resources/geneanno.csv",
 )
+parser.add_argument(
+    "--oldFormat",
+    action="store",
+    dest="oldFormat",
+    type=bool,
+    default=False,
+    help="backward compatibility with earlier model format",
+)
+
+
 args = parser.parse_args()
 
 modelList = pd.read_csv(args.modelList, sep="\t", header=0)
@@ -46,6 +56,14 @@ for file in modelList["ModelName"]:
 
 
 Xreducedall = np.load(args.inputFile)
+
+if args.oldFormat:
+    print("oldFormat == True")
+    Xreducedall = np.concatenate(
+        [np.zeros((Xreducedall.shape[0], 10, 1)), Xreducedall.reshape((-1, 10, 2002))],
+        axis=2,
+    ).reshape((-1, 20030))
+
 effect = np.zeros((Xreducedall.shape[0], len(models)))
 dtest_alt = xgb.DMatrix(Xreducedall)
 
